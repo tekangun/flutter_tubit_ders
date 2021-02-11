@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class Home extends StatefulWidget{
+class KayitEkleSilGuncelleList extends StatefulWidget{
   @override
-  State<StatefulWidget> createState()  => HomeState();
+  State<StatefulWidget> createState()  => KayitEkleSilGuncelleListState();
 
 }
 
-class HomeState extends State<Home>{
+class KayitEkleSilGuncelleListState extends State<KayitEkleSilGuncelleList>{
   String alttaraf = "";
   TextEditingController _listeYazisi = TextEditingController();
   List<String> kaydedilenListe = [];
