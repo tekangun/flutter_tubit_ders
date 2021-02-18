@@ -85,7 +85,6 @@ class KayitEkleSilGuncelleListState extends State<KayitEkleSilGuncelleList>{
     return Scaffold(
       appBar: AppBar(
         title: Text("Girdileri Listeleme"),
-        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(

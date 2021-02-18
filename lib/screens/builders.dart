@@ -53,7 +53,6 @@ class _BuildersState extends State<Builders> {
       ),
       appBar: AppBar(
         title: Text('Builders'),
-        centerTitle: true,
         automaticallyImplyLeading: false,
         leading: Padding(
           padding: EdgeInsets.only(left: 8.0),
