@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/constants.dart';
+import 'package:flutter_app/screens/nav_pages/nav_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hive/hive.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,7 +14,15 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  void login() {
+  Future<void> hiveSave() async {
+    await Hive.openBox('SignBox');
+    var box = Hive.box('SignBox');
+    await box.put('status', 1); // 1 ise giriş yapmış - 0 ise giriş yapmamış
+    await box.put('username', usernameController.text);
+    await box.put('password', passwordController.text);
+  }
+
+  void login() async {
     String message;
     if (_formKey.currentState.validate()) {
       print(users[1][0]);
@@ -20,8 +30,10 @@ class _LoginPageState extends State<LoginPage> {
       for (List<String> user in users) {
         if (user[0] == usernameController.text) {
           if (user[1] == passwordController.text) {
+            await hiveSave();
             message = 'Giriş Başarılı';
             Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (_) => NavBar()));
           } else
             message = 'Hatalı parola';
         } else

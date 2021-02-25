@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/nav_page.dart';
-
+import 'package:flutter_app/main_nav_page.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
 void main() {
+  Hive.initFlutter();
   runApp(MyApp());
 }
 

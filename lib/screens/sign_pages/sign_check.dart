@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/screens/nav_pages/nav_bar.dart';
 import 'package:flutter_app/screens/sign_pages/login_page.dart';
 import 'package:flutter_app/screens/sign_pages/registery_page.dart';
+
 class SignCheck extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -27,9 +29,12 @@ class SignCheck extends StatelessWidget {
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage())),
+              onPressed: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => LoginPage())),
             ),
-           SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             TextButton(
               style: TextButton.styleFrom(
                   shape: RoundedRectangleBorder(
