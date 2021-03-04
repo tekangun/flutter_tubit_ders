@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/main_nav_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,14 +10,14 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  var name = "";
+  var email = "";
 
   void loadDefaults() async{
     await Hive.openBox('SignBox');
     var box = Hive.box('SignBox');
     if(mounted){
       setState(() {
-        name = box.get('username');
+        email = box.get('email');
       });
     }
   }
@@ -30,6 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     void logOut() async {
       await Hive.deleteFromDisk();
+      await FirebaseAuth.instance.signOut();
       Fluttertoast.showToast(msg: 'Çıkış Yapıldı!');
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (_) => NavPage()), (route) => false);
@@ -51,7 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Kullanıcı Adı: $name'),
+              Text('Eposta: $email'),
               SizedBox(height: 10,),
               Text('Profil'),
             ],

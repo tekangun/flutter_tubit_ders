@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/constants.dart';
 import 'package:flutter_app/screens/nav_pages/nav_bar.dart';
@@ -10,7 +11,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -18,28 +19,45 @@ class _LoginPageState extends State<LoginPage> {
     await Hive.openBox('SignBox');
     var box = Hive.box('SignBox');
     await box.put('status', 1); // 1 ise giriş yapmış - 0 ise giriş yapmamış
-    await box.put('username', usernameController.text);
+    await box.put('email', emailController.text);
     await box.put('password', passwordController.text);
   }
 
-  void login() async {
-    String message;
-    if (_formKey.currentState.validate()) {
-      print(users[1][0]);
-      FocusScope.of(context).unfocus();
-      for (List<String> user in users) {
-        if (user[0] == usernameController.text) {
-          if (user[1] == passwordController.text) {
-            await hiveSave();
-            message = 'Giriş Başarılı';
-            Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (_) => NavBar()));
-          } else
-            message = 'Hatalı parola';
-        } else
-          message = 'Böyle bir kullanıcı bulunamadı';
+  Future signIn(String _email, String _password) async {
+    var auth = FirebaseAuth.instance;
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: _email, password: _password);
+      currentUserId = userCredential.user.uid;
+      if (mounted) {
+        setState(() {});
+      }
+      Fluttertoast.showToast(msg: 'Giriş Başarılı');
+      await hiveSave();
+      Navigator.pop(context);
+      Navigator.push(context, MaterialPageRoute(builder: (_) => NavBar()));
+    } catch (error) {
+      String message;
+
+      if(error.hashCode == 505284406){
+        message = 'Böyle bir kullanıcı bulunamadı';
+      }
+      else if(error.hashCode == 185768934){
+        message = 'Hatalı Parola';
+      }
+      else if(error.hashCode == 360587416){
+        message = 'Geçerli bir e-posta adresi giriniz';
+      }
+      else{
+        print('Sign Hata: ${error.hashCode}');
       }
       Fluttertoast.showToast(msg: message);
+    }
+  }
+
+  void login() async {
+    if (_formKey.currentState.validate()) {
+      await signIn(emailController.text, passwordController.text);
     }
   }
 
@@ -64,17 +82,17 @@ class _LoginPageState extends State<LoginPage> {
                       TextFormField(
                         validator: (String value) {
                           if (value.isEmpty) {
-                            return 'Lütfen kullanıcı adınızı giriniz';
+                            return 'Lütfen eposta adresinizi giriniz';
                           } else
                             return null;
                         },
-                        controller: usernameController,
+                        controller: emailController,
                         decoration: InputDecoration(
                             prefixIcon: Icon(Icons.person),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            labelText: 'Kullanıcı Adı'),
+                            labelText: 'E-posta'),
                       ),
                       SizedBox(
                         height: 10,

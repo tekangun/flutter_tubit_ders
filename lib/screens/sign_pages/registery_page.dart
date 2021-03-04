@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,14 +9,26 @@ class RegisteryPage extends StatefulWidget {
 }
 
 class _RegisteryPageState extends State<RegisteryPage> {
-  final usernameController = TextEditingController();
+  final  emailController = TextEditingController();
   final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  void startRegistery(){
+
+    Future registerFirebase(String _email,String _password){
+    var auth = FirebaseAuth.instance;
+    try{
+        auth.createUserWithEmailAndPassword(email: _email, password: _password);
+    }
+    catch (error) {
+      print('Hata: $error');
+    }
+
+
+  }
+  void startRegistery() async{
     if(_formKey.currentState.validate()){
       FocusScope.of(context).unfocus();
-      users.add([usernameController.text,passwordController.text]);
+      await registerFirebase(emailController.text,passwordController.text);
       Fluttertoast.showToast(msg: 'Kayıt Başarılı');
       Navigator.pop(context);
     }
@@ -42,17 +55,17 @@ class _RegisteryPageState extends State<RegisteryPage> {
                       TextFormField(
                         validator: (String value){
                           if(value.isEmpty){
-                            return 'Lütfen kullanıcı adınızı giriniz';
+                            return 'Lütfen eposta adresinizi giriniz';
                           }
                           else return null;
                         },
-                        controller: usernameController,
+                        controller: emailController,
                         decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.person),
+                            prefixIcon: Icon(Icons.mail),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            labelText: 'Kullanıcı Adı'),
+                            labelText: 'E-posta'),
                       ),
                       SizedBox(
                         height: 10,
@@ -63,6 +76,9 @@ class _RegisteryPageState extends State<RegisteryPage> {
                         validator: (String value){
                           if(value.isEmpty){
                             return 'Lütfen parolanızı giriniz';
+                          }
+                          else if(value.length < 6){
+                            return 'Parola en az 6 karakterli olmalıdır. (${value.length})';
                           }
                           else return null;
                         },

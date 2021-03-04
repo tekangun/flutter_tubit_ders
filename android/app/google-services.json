@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "339946283872",
+    "firebase_url": "https://flutter-tubit-ders-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "flutter-tubit-ders",
+    "storage_bucket": "flutter-tubit-ders.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:339946283872:android:03b038f84aa8812ee83405",
+        "android_client_info": {
+          "package_name": "com.example.flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "339946283872-jsivgabbmj6piitelk8bg4qctm51sop2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdqJNvDzlewpp31QglCSFWKRjaA07cw2o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "339946283872-jsivgabbmj6piitelk8bg4qctm51sop2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
